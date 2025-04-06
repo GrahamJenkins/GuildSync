@@ -49,7 +49,7 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 
 | Task                                              | Status        | Notes                                  |
 |---------------------------------------------------|---------------|----------------------------------------|
-| Implement Discord bot login/auth                  | 🟢 To Do      |                                        |
+| Implement Discord bot login/auth                  | ✅ Done       | Completed 2025-04-06, modularized with structured logging and dotenv support |
 | Implement channel bridging wizard                 | 🟢 To Do      |                                        |
 | Implement cross-server bridging (with or without translation) | 🟢 To Do      | Enable linking channels across different servers, optionally with translation |
 | Implement message translation via LLM API         | 🟢 To Do      |                                        |
