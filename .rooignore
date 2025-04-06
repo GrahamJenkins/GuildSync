@@ -1,0 +1,54 @@
+# Ignore dependencies
+node_modules/
+yarn.lock
+package-lock.json
+
+# Build outputs
+dist/
+build/
+coverage/
+.cache/
+.tmp/
+
+# Environment & secrets
+.env
+.env.*
+*.secret
+*.key
+*.pem
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Database files
+*.sqlite
+*.db
+
+# Python cache (if any)
+__pycache__/
+*.pyc
+
+# Misc
+*.swp
+*.swo
+*.tmp
+
+# Ignore test snapshots (optional)
+__snapshots__/
+
+# Ignore Docker artifacts
+*.tar
+docker-compose.override.yml
+
+# Ignore user-specific config
+*.code-workspace
+.vscode/
+.idea/
