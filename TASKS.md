@@ -12,6 +12,8 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 - **Discoveries during work:** Add unexpected sub-tasks or issues to the "Discovered During Work" section below.
 - **Update regularly:** Keep this file current to reflect project status.
 
+> **Note:** After updating this file, **always commit your changes along with related code updates** to keep the task list synchronized.
+
 ---
 
 

@@ -135,6 +135,11 @@ All other tasks, including new features, refactors, architectural changes, or an
    - Update or add relevant documentation (code comments, Typedoc, README, NOTES, API docs).
    - Ensure new features and changes are well-documented.
 
+9. **Update `TASKS.md`**
+   - After completing your task, update `TASKS.md` to reflect the new status (e.g., mark as ✅ Done, add completion date/notes).
+   - **Stage and commit the updated `TASKS.md` file along with your code changes.**
+   - This ensures the task list remains accurate and synchronized with the codebase.
+
 9. **Code Review**
    - Perform a thorough self-review or request a peer review.
    - Address any feedback or identified issues.
