@@ -33,7 +33,7 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 |---------------------------------------------------|---------------|----------------------------------------|
 | Initialize git repository                         | 🟢 To Do      |                                        |
 | Populate `.gitignore` with common Node, OS, and editor ignores | 🟢 To Do      |                                        |
-| Setup Yarn project with TypeScript                | 🟢 To Do      |                                        |
+| Setup Yarn project with TypeScript                | ✅ Done       | Completed 2025-04-06                   |
 | Configure ESLint with strict rules                | ✅ Done       | Completed 2025-04-05                   |
 | Configure Prettier with strict rules              | ✅ Done       | Completed 2025-04-05                   |
 | Setup environment variable support (`.env`)       | 🟢 To Do      |                                        |
