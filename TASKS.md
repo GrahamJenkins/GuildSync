@@ -32,9 +32,10 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Task                                              | Status        | Notes                                  |
 |---------------------------------------------------|---------------|----------------------------------------|
 | Initialize git repository                         | 🟢 To Do      |                                        |
+| Populate `.gitignore` with common Node, OS, and editor ignores | 🟢 To Do      |                                        |
 | Setup Yarn project with TypeScript                | 🟢 To Do      |                                        |
-| Configure ESLint with strict rules                | 🟢 To Do      |                                        |
-| Configure Prettier with strict rules              | 🟢 To Do      |                                        |
+| Configure ESLint with strict rules                | ✅ Done       | Completed 2025-04-05                   |
+| Configure Prettier with strict rules              | ✅ Done       | Completed 2025-04-05                   |
 | Setup environment variable support (`.env`)       | 🟢 To Do      |                                        |
 | Create Dockerfile for production                  | 🟢 To Do      |                                        |
 | Setup SQLite integration                         | 🟢 To Do      |                                        |
