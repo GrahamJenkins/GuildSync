@@ -40,13 +40,13 @@ A **free, open-source, self-hostable** Discord bot designed to **break down lang
 - A **Discord bot token** (see below)
 - An OpenAI-compatible API endpoint URL (and optional API key)
 
-### Obtaining a Discord Bot Token
+### Discord Bot Setup
 
-- Visit the [Discord Developer Portal](https://discord.com/developers/applications)
-- Create a **new application**
-- Navigate to the **Bot** tab and add a bot to your application
-- Copy the **bot token** and keep it secure
-- Use this token in your `.env` configuration
+You will need a **Discord bot token** to run GuildSync.
+
+If you don't already have a bot, follow the detailed instructions in [docs/DISCORD_BOT_SETUP.md](./docs/DISCORD_BOT_SETUP.md) to create one, configure permissions, and invite it to your server.
+
+Once you have your bot token, add it to your `.env` file as shown in the environment configuration section.
 
 ### Setup
 
