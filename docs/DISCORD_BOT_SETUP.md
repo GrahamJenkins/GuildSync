@@ -74,7 +74,7 @@ You can customize permissions using the [Discord Permissions Calculator](https:/
 
 ## 7. Run Your Bot
 
-- Start your bot locally (e.g., `yarn dev`)
+- Start your bot locally (e.g., `yarn start`)
 - The bot should appear **online** in your server
 
 ---
