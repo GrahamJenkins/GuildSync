@@ -62,6 +62,19 @@ You can customize permissions using the [Discord Permissions Calculator](https:/
 
 ---
 
+### Privileged Intents
+
+This bot **requires** the **Message Content privileged intent** to process and bridge messages. Without this intent enabled, the bot **will not function** as intended.
+
+Bots in **fewer than 100 servers** can use this intent without approval. However, once a bot reaches **75 servers**, it becomes eligible to apply for verification.
+Bots **must be verified and approved before exceeding 100 servers**; otherwise, access to the Message Content intent will be disabled, and the bot will stop working properly.
+
+For more details, refer to the [Message Content Privileged Intent FAQ](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Privileged-Intent-FAQ).
+
+---
+
+---
+
 ## 6. Invite the Bot to Your Server
 
 - You **must** have **Manage Server** permission on the target server
