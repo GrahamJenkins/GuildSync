@@ -3,13 +3,18 @@ import type { CloseEvent } from 'ws';
 import logger from '../utils/logger';
 let botClientId: string | null = null;
 
-const client = new Client({
+const client: Client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
   ],
 });
+
+/**
+ * Singleton Discord client instance used throughout the app.
+ */
+export { client };
 
 /**
  * Starts the Discord bot by logging in and setting up event listeners.
@@ -30,18 +35,29 @@ export async function startBot(): Promise<void> {
   }
 }
 
-client.once('ready', () => {
+client.once('ready', async () => {
   logger.info('Discord bot logged in as %s', client.user?.tag);
   console.log(`[INFO] Bot logged in as ${client.user?.tag}`);
   botClientId = client.user?.id ?? null;
+
+  const devGuildId = process.env.DEV_GUILD_ID;
+  if (devGuildId && botClientId) {
+    console.log(`[INFO] Registering slash commands for dev guild ${devGuildId}...`);
+    try {
+      await registerGuildSyncCommands(devGuildId);
+      console.log(`[INFO] Slash commands registered for dev guild ${devGuildId}.`);
+    } catch (error) {
+      console.error(`[ERROR] Failed to register commands for dev guild ${devGuildId}:`, error);
+    }
+  }
 });
 
 
-client.on('warn', (info) => {
+client.on('warn', (info: string | unknown) => {
   console.warn('[WARN EVENT]', info);
 });
 
-client.on('error', (error) => {
+client.on('error', (error: Error | unknown) => {
   console.error('[ERROR EVENT]', error);
 });
 
@@ -53,16 +69,50 @@ client.on('shardDisconnect', (event: any, shardId: number) => {
   logger.warn('Discord shard %d disconnected: %o', shardId, event);
 });
 
-client.on('interactionCreate', async (interaction) => {
+import type { Interaction } from 'discord.js';
+
+client.on('interactionCreate', async (interaction: Interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  // Add future slash command handlers here
+  if (interaction.commandName === 'guildsync' || interaction.commandName === 'gs') {
+    const { handleCreate, handleJoin, handleAbout, getAboutMessage } = await import('../utils/commandHandlers');
+
+    const action = interaction.options.getString('action');
+    const groupCode = interaction.options.getString('group_code');
+
+    const member = interaction.member;
+    let isAdmin = false;
+    if (member && 'permissions' in member) {
+      const perms = member.permissions;
+      if (typeof perms !== 'string' && perms.has('Administrator')) {
+        isAdmin = true;
+      }
+    }
+
+    if (!isAdmin) {
+      await handleAbout(interaction);
+      return;
+    }
+
+    if (action === 'about') {
+      await handleAbout(interaction);
+      return;
+    }
+
+    if (action === 'create') {
+      await handleCreate(interaction);
+    } else if (action === 'join') {
+      if (!groupCode) {
+        await interaction.reply('Please provide a sync group code to join.');
+      } else {
+        await handleJoin(interaction, groupCode);
+      }
+    } else {
+      await interaction.reply('Unknown action. Please specify "create", "join", or "about".');
+    }
+  }
 });
 
-/**
- * TEMPORARY: Register /hello slash command for a specific guild
- * Replace 'YOUR_GUILD_ID_HERE' with your guild ID after running the debug command
- */
 import { REST, Routes, SlashCommandBuilder } from 'discord.js';
 
 const registeredGuilds = new Set<string>();
@@ -84,6 +134,15 @@ export async function registerGuildCommands(
     console.warn('Skipping command registration. Missing token, clientId, or guildId.');
     return;
   }
+/**
+ * Discord bot authentication and command registration module.
+ *
+ * - Exports a singleton Discord `client` instance.
+ * - Provides `startBot()` to login and initialize the bot.
+ * - Handles slash command registration and event listeners.
+ * - Used as the main entry point for bot startup.
+ */
+
 
   const rest = new REST({ version: '10' }).setToken(token);
 
@@ -95,22 +154,11 @@ export async function registerGuildCommands(
         body: commands.map(cmd => ('toJSON' in cmd ? cmd.toJSON() : cmd)),
       }
     );
-    console.log(`Commands registered for guild ${guildId}.`);
     registeredGuilds.add(guildId);
   } catch (error) {
     console.error(`Failed to register commands for guild ${guildId}:`, error);
   }
 }
-
-// TEMPORARY: Auto-register /hello command on any message received (DISABLED)
-// client.on('messageCreate', (message) => {
-//   if (message.author.bot) return;
-//   const guildId = message.guild?.id;
-//   if (!guildId) return;
-//   if (registeredGuilds.has(guildId)) return;
-//   if (!botClientId) return;
-//   registerHelloCommand(guildId, botClientId);
-// });
 
 /**
  * Unregister multiple slash commands by name for a specific guild
@@ -136,4 +184,95 @@ export async function unregisterGuildCommands(
   } catch (error) {
     console.error(`Failed to delete commands from guild ${guildId}:`, error);
   }
+}
+
+/**
+ * Register /guildsync and /gs commands for a guild.
+ */
+export async function registerGuildSyncCommands(guildId: string) {
+  if (!botClientId) {
+    console.warn('Bot client ID not available yet.');
+    return;
+  }
+
+  const commands = [
+    (() => {
+      const builder = new SlashCommandBuilder()
+        .setName('guildsync')
+        .setDescription('GuildSync command (multi-purpose)');
+
+      builder.addStringOption(option =>
+        option
+          .setName('action')
+          .setDescription('Action to perform')
+          .setRequired(true)
+          .addChoices(
+            { name: 'create', value: 'create' },
+            { name: 'join', value: 'join' },
+            { name: 'about', value: 'about' }
+          )
+      );
+
+      builder.addStringOption(option =>
+        option
+          .setName('group_code')
+          .setDescription('Sync group code (required for join)')
+          .setRequired(false)
+      );
+
+      builder.addChannelOption(option =>
+        option
+          .setName('channel')
+          .setDescription('Target channel to link (optional)')
+          .setRequired(false)
+      );
+
+      return builder;
+    })(),
+    (() => {
+      const builder = new SlashCommandBuilder()
+        .setName('gs')
+        .setDescription('GuildSync command (alias)');
+
+      builder.addStringOption(option =>
+        option
+          .setName('action')
+          .setDescription('Action to perform')
+          .setRequired(true)
+          .addChoices(
+            { name: 'create', value: 'create' },
+            { name: 'join', value: 'join' },
+            { name: 'about', value: 'about' }
+          )
+      );
+
+      builder.addStringOption(option =>
+        option
+          .setName('group_code')
+          .setDescription('Sync group code (required for join)')
+          .setRequired(false)
+      );
+
+      builder.addChannelOption(option =>
+        option
+          .setName('channel')
+          .setDescription('Target channel to link (optional)')
+          .setRequired(false)
+      );
+
+      return builder;
+    })(),
+  ];
+
+  await registerGuildCommands(guildId, botClientId, commands);
+/**
+ * Returns information about GuildSync.
+ */
+function getAboutMessage() {
+  return (
+    "**GuildSync** is a free, open-source, self-hostable Discord bot " +
+    "designed to break down language barriers in global gaming communities. " +
+    "It enables seamless, real-time multilingual communication and cross-server collaboration."
+  );
+}
 }

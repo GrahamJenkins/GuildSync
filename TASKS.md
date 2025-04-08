@@ -57,6 +57,23 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Abstract translation provider interface           | 🟢 To Do      |                                        |
 | Store channel/user configs in SQLite              | 🟢 To Do      |                                        |
 | Admin commands for managing bridges               | 🟢 To Do      |                                        |
+---
+
+## Simplified MVP - Minimal Chat Bridge
+
+> These tasks are a **minimal subset** for rapid MVP delivery and **do not duplicate** the broader planned features above. They can be marked complete independently.
+
+| Task                                                      | Status        | Notes                                                  |
+|-----------------------------------------------------------|---------------|--------------------------------------------------------|
+| Implement `updateGuild` internal function                 | ✅ Done       | Upserts guild info, called internally                  |
+| Implement `createSyncGroup` internal function             | ✅ Done       | Creates sync groups, called internally                 |
+| Implement `/guildsync` and `/gs` commands with 'create' and 'join' parameters | ✅ Done       | Unified command with branching logic                   |
+| Implement logic to create sync groups via command         | ✅ Done       | Calls `createSyncGroup` internally                     |
+| Implement logic to join sync groups via command           | ✅ Done       | Links current channel to existing sync group           |
+| Implement basic bidirectional message sync (no translation) | ✅ Done   | Forward messages between linked channels               |
+| Verify minimal database schema supports bridging          | ✅ Done       | Guilds, SyncGroups, ChannelLinks tables                |
+
+---
 
 ---
 
@@ -64,13 +81,13 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 
 | Component                 | Status        | Description                                                      |
 |---------------------------|---------------|------------------------------------------------------------------|
-| Event Listener            | 🟢 To Do      | Handles Discord events and dispatches to appropriate handlers    |
+| Event Listener            | ✅ Done       | Handles Discord events and dispatches to appropriate handlers    |
 | Command Handler           | 🟢 To Do      | Parses commands, checks permissions, routes to features          |
-| Bridge Manager            | 🟢 To Do      | Manages linked channels/servers, message forwarding              |
+| Bridge Manager (Sync Manager) | ✅ Done   | Manages linked channels/servers, message syncing                 |
 | Translation Service       | 🟢 To Do      | Interfaces with LLM APIs, abstracts translation providers        |
 | Config Manager            | 🟢 To Do      | Loads, caches, and validates guild/channel/user configs          |
-| Database Layer            | 🟢 To Do      | Abstracts SQLite/Postgres, manages data access                   |
-| Logging & Error Handling  | 🟢 To Do      | Centralized logging, error capture, and reporting                |
+| Database Layer            | ✅ Done       | Abstracts SQLite/Postgres, manages data access                   |
+| Logging & Error Handling  | 🟡 Partial    | Basic console logs, improve with structured logging              |
 
 ---
 
@@ -93,6 +110,8 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Define data models for Guild, Channel, User       | ✅ Done       | Prisma schema defined, 2025-04-07      |
 | Design Bridge definitions schema                  | 🟢 To Do      | How channels/servers are linked        |
 | Plan configuration storage schema                 | 🟢 To Do      | Per-guild/channel/user configs         |
+| Enforce one sync group per Discord channel        | 🟢 To Do      | Add unique constraint or validation to prevent multiple group memberships per channel |
+| Sync group unique enforcement                     | 🟢 To Do      | Enforce at DB and app level that a channel can belong to only one sync group |
 | Create ER diagrams or schema sketches             | 🟢 To Do      | Visualize data relationships           |
 | Create database migrations for schema             | ✅ Done       | Prisma migrations ready, 2025-04-07    |
 | Implement schema models in code                   | 🟢 To Do      | Implement runtime data access layer    |
@@ -122,6 +141,7 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Design setup wizard UX flow                      | 🟢 To Do      | Step-by-step channel/server linking, error handling               |
 | Design help and onboarding flows                 | 🟢 To Do      | User guidance, fallback messages                                  |
 | Review UX expectations with project manager      | 🟢 To Do      | Clarify desired flows and user experience before implementation   |
+| Improve permission checks                        | 🟢 To Do      | More granular admin/user roles, command restrictions              |
 
 ---
 
@@ -175,6 +195,7 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Finalize NOTES.md                                | ✅ Done       |                                        |
 | Create detailed architecture diagrams             | 🟢 To Do      |                                        |
 | Write user guide for bot setup and usage          | 🟢 To Do      |                                        |
+| Add quickstart MVP documentation                  | 🟢 To Do      | Minimal guide for setup and testing MVP sync                       |
 
 ---
 
