@@ -111,7 +111,8 @@ export async function linkChannelToGroup(
   syncGroupId: string,
   channelName: string,
   addedByUserId: string,
-  addedByUsername: string
+  addedByUsername: string,
+  language: string
 ) {
   const now = new Date();
 
@@ -122,7 +123,7 @@ export async function linkChannelToGroup(
       sync_group_id: syncGroupId,
       name: channelName,
       rate_limit: 0,
-      language_code: 'en',
+      language_code: language,
       status: 'accepted',
       added_by_user_id: BigInt(addedByUserId),
       added_by_username: addedByUsername,

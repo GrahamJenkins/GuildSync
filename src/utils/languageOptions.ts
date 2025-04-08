@@ -1,0 +1,22 @@
+export const LANGUAGE_CHOICES = [
+  { name: 'English', value: 'en' },
+  { name: 'Spanish', value: 'es' },
+  { name: 'French', value: 'fr' },
+  { name: 'German', value: 'de' },
+  { name: 'Italian', value: 'it' },
+  { name: 'Portuguese', value: 'pt' },
+  { name: 'Russian', value: 'ru' },
+  { name: 'Chinese', value: 'zh' },
+  { name: 'Japanese', value: 'ja' },
+  { name: 'Korean', value: 'ko' },
+  { name: 'Arabic', value: 'ar' },
+  { name: 'Hindi', value: 'hi' },
+  { name: 'Turkish', value: 'tr' },
+  { name: 'Dutch', value: 'nl' },
+  { name: 'Vietnamese', value: 'vi' },
+  { name: 'Polish', value: 'pl' },
+  { name: 'Ukrainian', value: 'uk' },
+  { name: 'Swedish', value: 'sv' },
+  { name: 'Thai', value: 'th' },
+  { name: 'Hebrew', value: 'he' }
+];

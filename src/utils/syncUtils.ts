@@ -48,8 +48,7 @@ export function filterOutOriginChannel(channelIds: string[], originChannelId: st
  * @param message The original Discord message
  * @param targetChannelIds Array of channel IDs to sync to
  */
-export async function syncMessageToChannels(message: Message, targetChannelIds: string[]): Promise<void> {
-  const client = message.client;
+export async function syncMessageToChannels(client: import('discord.js').Client, message: Message, targetChannelIds: string[]): Promise<void> {
   for (const channelId of targetChannelIds) {
     try {
       const channel = await client.channels.fetch(channelId);
@@ -65,6 +64,26 @@ export async function syncMessageToChannels(message: Message, targetChannelIds: 
       console.error(`[Sync] Failed to sync message to channel ${channelId}:`, error);
     }
   }
+}
+
+/**
+ * Fetch linked channels with metadata including language.
+ * Placeholder implementation: replace with actual DB/config fetch.
+ */
+
+export async function getLinkedChannelsWithMetadata(syncGroupId: string): Promise<{ id: string; language: string }[]> {
+  const channels = await prisma.groupChannel.findMany({
+    where: { sync_group_id: syncGroupId },
+    select: {
+      discord_id: true,
+      language_code: true,
+    },
+  });
+
+  return channels.map((channel) => ({
+    id: channel.discord_id.toString(),
+    language: channel.language_code || 'en',
+  }));
 }
 
 /**

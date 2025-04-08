@@ -42,6 +42,7 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Create Dockerfile for production                  | 🟢 To Do      |                                        |
 | Setup SQLite integration                         | ✅ Done       | Prisma with SQLite configured, 2025-04-07 |
 | Plan PostgreSQL (Supabase) integration (future)   | 🟢 To Do      | Planned for future deployment          |
+| Document Node.js 18+ requirement in README        | ✅ Done       | Added 2025-04-08, due to native fetch dependency |
 
 ---
 
@@ -52,7 +53,9 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Implement Discord bot login/auth                  | ✅ Done       | Completed 2025-04-06, modularized with structured logging and dotenv support |
 | Implement channel bridging wizard                 | 🟢 To Do      |                                        |
 | Implement cross-server bridging (with or without translation) | 🟢 To Do      | Enable linking channels across different servers, optionally with translation |
-| Implement message translation via LLM API         | 🟢 To Do      |                                        |
+| Implement message translation via LLM API         | ✅ Done       | Completed 2025-04-08, with retry logic and OpenAI-compatible API support |
+| Implement per-channel language support            | ✅ Done       | Completed 2025-04-08, slash command options, stored in DB                   |
+| Refactor environment variables for LLM API (`LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`) | ✅ Done | Completed 2025-04-08                   |
 | Implement reaction-based inline translation       | 🟢 To Do      |                                        |
 | Abstract translation provider interface           | 🟢 To Do      |                                        |
 | Store channel/user configs in SQLite              | 🟢 To Do      |                                        |
@@ -82,9 +85,9 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Component                 | Status        | Description                                                      |
 |---------------------------|---------------|------------------------------------------------------------------|
 | Event Listener            | ✅ Done       | Handles Discord events and dispatches to appropriate handlers    |
-| Command Handler           | 🟢 To Do      | Parses commands, checks permissions, routes to features          |
+| Command Handler           | ✅ Done       | Parses commands, checks permissions, routes to features          |
 | Bridge Manager (Sync Manager) | ✅ Done   | Manages linked channels/servers, message syncing                 |
-| Translation Service       | 🟢 To Do      | Interfaces with LLM APIs, abstracts translation providers        |
+| Translation Service       | ✅ Done       | Interfaces with LLM APIs, abstracts translation providers        |
 | Config Manager            | 🟢 To Do      | Loads, caches, and validates guild/channel/user configs          |
 | Database Layer            | ✅ Done       | Abstracts SQLite/Postgres, manages data access                   |
 | Logging & Error Handling  | 🟡 Partial    | Basic console logs, improve with structured logging              |

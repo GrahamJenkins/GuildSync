@@ -114,6 +114,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 });
 
 import { REST, Routes, SlashCommandBuilder } from 'discord.js';
+import { LANGUAGE_CHOICES } from '../utils/languageOptions';
 
 const registeredGuilds = new Set<string>();
 
@@ -212,6 +213,14 @@ export async function registerGuildSyncCommands(guildId: string) {
             { name: 'about', value: 'about' }
           )
       );
+      
+      builder.addStringOption(option =>
+        option
+          .setName('language')
+          .setDescription('Language code for this channel')
+          .setRequired(false)
+          .addChoices(...LANGUAGE_CHOICES)
+      );
 
       builder.addStringOption(option =>
         option
@@ -244,6 +253,14 @@ export async function registerGuildSyncCommands(guildId: string) {
             { name: 'join', value: 'join' },
             { name: 'about', value: 'about' }
           )
+      );
+      
+      builder.addStringOption(option =>
+        option
+          .setName('language')
+          .setDescription('Language code for this channel')
+          .setRequired(false)
+          .addChoices(...LANGUAGE_CHOICES)
       );
 
       builder.addStringOption(option =>

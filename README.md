@@ -35,10 +35,10 @@ A **free, open-source, self-hostable** Discord bot designed to **break down lang
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (latest LTS recommended)
+- [Node.js](https://nodejs.org/) **version 18.x LTS or newer required** (due to native fetch support)
 - [Yarn](https://yarnpkg.com/) (required, **do not use npm**)
 - A **Discord bot token** (see below)
-- An OpenAI-compatible API endpoint URL (and optional API key)
+- An **OpenAI-compatible API endpoint URL**, API key, and model name
 
 ### Discord Bot Setup
 
@@ -46,7 +46,24 @@ You will need a **Discord bot token** to run GuildSync.
 
 If you don't already have a bot, follow the detailed instructions in [docs/DISCORD_BOT_SETUP.md](./docs/DISCORD_BOT_SETUP.md) to create one, configure permissions, and invite it to your server.
 
-Once you have your bot token, add it to your `.env` file as shown in the environment configuration section.
+Once you have your bot token, add it to your `.env` file as shown below.
+
+### Environment Variables
+
+Create a `.env` file with the following variables:
+
+```
+DISCORD_TOKEN=your-discord-bot-token
+
+# LLM API configuration
+LLM_BASE_URL=https://your-openai-compatible-endpoint/v1/chat/completions
+LLM_API_KEY=your-api-key
+LLM_MODEL=gpt-3.5-turbo
+```
+
+- `LLM_BASE_URL`: Base URL of your OpenAI-compatible API endpoint.
+- `LLM_API_KEY`: API key for authentication.
+- `LLM_MODEL`: Model name to use (e.g., `gpt-3.5-turbo`).
 
 ### Setup
 
@@ -65,13 +82,23 @@ yarn install
 
 3. **Configure environment variables**
 
-Create a `.env` file based on `.env.example` (to be created) with your secrets and configuration.
+Create a `.env` file as shown above.
 
 4. **Run the bot in development mode**
 
 ```
 yarn dev
 ```
+
+---
+
+## Language Support
+
+When creating or joining a sync group, you can specify a **language code** for the channel. This controls the translation target/source language.
+
+- Defaults to **English (`en`)** if unspecified.
+- Supports many languages, including Spanish (`es`), French (`fr`), German (`de`), Chinese (`zh`), Japanese (`ja`), and more.
+- The bot will suggest common languages when using slash commands.
 
 ---
 

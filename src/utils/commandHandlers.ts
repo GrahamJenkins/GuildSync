@@ -33,13 +33,16 @@ export async function handleCreate(interaction: ChatInputCommandInteraction) {
     await utils.upsertGuild(guild.id, guild.name, guild.iconURL());
 
     const syncGroup = await utils.createSyncGroup(userId);
+    const language = interaction.options.getString('language') ?? 'en';
+
     await utils.linkChannelToGroup(
       targetChannel.id,
       guild.id,
       syncGroup.id,
       ('name' in targetChannel ? (targetChannel as any).name : 'Unnamed Channel'),
       userId,
-      username
+      username,
+      language
     );
 
     await interaction.reply(
@@ -70,13 +73,16 @@ export async function handleJoin(interaction: ChatInputCommandInteraction, group
     await utils.upsertUser(userId, username);
     await utils.upsertGuild(guild.id, guild.name, guild.iconURL());
 
+    const language = interaction.options.getString('language') ?? 'en';
+
     await utils.linkChannelToGroup(
       targetChannel.id,
       guild.id,
       groupCode,
       ('name' in targetChannel ? (targetChannel as any).name : 'Unnamed Channel'),
       userId,
-      username
+      username,
+      language
     );
 
     await interaction.reply(`Linked channel <#${targetChannel.id}> to sync group \`${groupCode}\`!`);
