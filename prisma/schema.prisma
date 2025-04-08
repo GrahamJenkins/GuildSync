@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Guild {
+  id         BigInt         @id
+  name       String
+  icon       String
+  created_at DateTime       @default(now())
+  updated_at DateTime       @updatedAt
+  channels   GroupChannel[]
+}
+
+model User {
+  id            BigInt         @id
+  username      String
+  avatar        String
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  groups        SyncGroup[]
+  addedChannels GroupChannel[] @relation("AddedChannels")
+}
+
+model SyncGroup {
+  id                String        @id @default(uuid())
+  name              String
+  description       String
+  join_code         String?
+  created_by_user_id BigInt
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+
+  createdBy         User          @relation(fields: [created_by_user_id], references: [id])
+  channels          GroupChannel[]
+}
+
+model GroupChannel {
+  id                String        @id @default(uuid())
+  discord_id        BigInt
+  guild_id          BigInt
+  sync_group_id     String
+  name              String
+  rate_limit        Int
+  language_code     String
+  status            Status
+  added_by_user_id  BigInt
+  added_by_username String
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+
+  guild             Guild         @relation(fields: [guild_id], references: [id])
+  syncGroup         SyncGroup     @relation(fields: [sync_group_id], references: [id])
+  addedBy           User          @relation("AddedChannels", fields: [added_by_user_id], references: [id])
+}
+
+enum Status {
+  pending
+  accepted
+  denied
+}

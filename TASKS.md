@@ -40,8 +40,8 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Configure Prettier with strict rules              | ✅ Done       | Completed 2025-04-05                   |
 | Setup environment variable support (`.env`)       | 🟢 To Do      |                                        |
 | Create Dockerfile for production                  | 🟢 To Do      |                                        |
-| Setup SQLite integration                         | 🟢 To Do      |                                        |
-| Plan PostgreSQL (Supabase) integration (future)   | 🟢 To Do      |                                        |
+| Setup SQLite integration                         | ✅ Done       | Prisma with SQLite configured, 2025-04-07 |
+| Plan PostgreSQL (Supabase) integration (future)   | 🟢 To Do      | Planned for future deployment          |
 
 ---
 
@@ -90,11 +90,13 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 
 | Task                                              | Status        | Notes                                  |
 |---------------------------------------------------|---------------|----------------------------------------|
-| Define data models for Guild, Channel, User       | 🟢 To Do      | Identify required fields and relations |
+| Define data models for Guild, Channel, User       | ✅ Done       | Prisma schema defined, 2025-04-07      |
 | Design Bridge definitions schema                  | 🟢 To Do      | How channels/servers are linked        |
 | Plan configuration storage schema                 | 🟢 To Do      | Per-guild/channel/user configs         |
 | Create ER diagrams or schema sketches             | 🟢 To Do      | Visualize data relationships           |
-| Plan database migrations                          | 🟢 To Do      | Support schema evolution               |
+| Create database migrations for schema             | ✅ Done       | Prisma migrations ready, 2025-04-07    |
+| Implement schema models in code                   | 🟢 To Do      | Implement runtime data access layer    |
+| Plan database migrations                          | ✅ Done       | Migration workflow documented, 2025-04-07 |
 | Abstract DB access for SQLite/Postgres            | 🟢 To Do      | Use ORM or custom abstraction layer    |
 
 ---
