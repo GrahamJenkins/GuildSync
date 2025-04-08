@@ -60,6 +60,7 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Abstract translation provider interface           | 🟢 To Do      |                                        |
 | Store channel/user configs in SQLite              | 🟢 To Do      |                                        |
 | Admin commands for managing bridges               | 🟢 To Do      |                                        |
+| Dynamic SyncGroup Builder wizard (interactive, replaces `/gc create`) | 🟢 To Do      | [Discord.js Select Menus Guide](https://discordjs.guide/message-components/select-menus.html#auto-populating-select-menus) - User-friendly group builder with questions for language, channel, etc. |
 ---
 
 ## Simplified MVP - Minimal Chat Bridge
