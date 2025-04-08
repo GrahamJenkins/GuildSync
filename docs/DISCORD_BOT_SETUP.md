@@ -36,7 +36,7 @@ This guide explains how to create a Discord application, add a bot, generate an 
 Use this template:
 
 ```
-https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot&permissions=534723950656
+https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot&permissions=535260821568
 ```
 
 Replace `YOUR_CLIENT_ID` with your application's **Client ID** (found on the **General Information** page).
@@ -52,6 +52,7 @@ The permissions integer `534723950656` includes:
 | View Channels              | To read messages                                   |
 | Send Messages              | To send translations                               |
 | Manage Messages            | To delete or pin messages if needed                |
+| Manage Webhooks            | To create and manage webhooks for sender impersonation |
 | Embed Links                | To send rich embeds                                |
 | Attach Files               | To send images or files                            |
 | Read Message History       | To access past messages for context                |

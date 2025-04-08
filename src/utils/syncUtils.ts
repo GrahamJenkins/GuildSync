@@ -1,4 +1,4 @@
-import { Message, GuildMember, TextChannel } from 'discord.js';
+import { Message, GuildMember, TextChannel, WebhookClient, ChannelType, GuildTextBasedChannel } from 'discord.js';
 import { prisma } from '../prismaClient';
 
 /**
@@ -48,22 +48,110 @@ export function filterOutOriginChannel(channelIds: string[], originChannelId: st
  * @param message The original Discord message
  * @param targetChannelIds Array of channel IDs to sync to
  */
+const webhookCache: Record<string, WebhookClient> = {};
+
 export async function syncMessageToChannels(client: import('discord.js').Client, message: Message, targetChannelIds: string[]): Promise<void> {
+  console.debug('[Sync Debug] message.member:', {
+    nickname: message.member?.nickname,
+    userId: message.member?.user.id,
+  });
+  console.debug('[Sync Debug] message.author:', {
+    username: message.author.username,
+    discriminator: message.author.discriminator,
+    id: message.author.id,
+    avatar: message.author.displayAvatarURL(),
+  });
+
+  let senderName: string = message.author.username;
+  try {
+    if (message.guild) {
+      const member = await message.guild.members.fetch(message.author.id);
+      senderName = member.nickname ?? member.user.username;
+      console.debug('[Sync Debug] fetched member:', {
+        nickname: member.nickname,
+        username: member.user.username,
+      });
+    } else {
+      senderName = message.author.username;
+    }
+  } catch (fetchErr) {
+  console.debug('[Sync Debug] final senderName:', senderName);
+    console.warn('[Sync Debug] Failed to fetch member, attempting to fetch user profile:', fetchErr);
+    try {
+      const user = await message.client.users.fetch(message.author.id);
+      senderName = user.username;
+      console.debug('[Sync Debug] fetched user profile:', {
+        username: user.username,
+        id: user.id,
+      });
+    } catch (userFetchErr) {
+      console.warn('[Sync Debug] Failed to fetch user profile, falling back to cached author username:', userFetchErr);
+      senderName = message.author.username;
+    }
+  }
+
+  const senderAvatar = message.author.displayAvatarURL();
+
   for (const channelId of targetChannelIds) {
     try {
       const channel = await client.channels.fetch(channelId);
-      if (channel && channel.isTextBased()) {
-        await (channel as TextChannel).send({
+
+      if (!channel || !channel.isTextBased() || channel.type !== ChannelType.GuildText) {
+        continue;
+      }
+
+      const textChannel = channel as TextChannel;
+
+      let webhookClient: WebhookClient | null = null;
+
+      try {
+        webhookClient = await getOrCreateWebhook(textChannel);
+        await webhookClient.send({
           content: message.content,
+          username: senderName,
+          avatarURL: senderAvatar,
           embeds: message.embeds,
           files: message.attachments.map((a) => a),
         });
-        console.log(`[Sync] Synced message to channel ${channelId}`);
+        console.log(`[Sync] Synced message via webhook to channel ${channelId}`);
+      } catch (webhookError) {
+        console.warn(`[Sync] Webhook failed for channel ${channelId}, falling back. Reason:`, webhookError);
+
+        // Remove cached webhook so it can be recreated next time
+        delete webhookCache[channelId];
+
+        // Fallback: send as bot with sender prefix
+        await textChannel.send({
+          content: `**[${senderName}]** ${message.content}`,
+          embeds: message.embeds,
+          files: message.attachments.map((a) => a),
+        });
+        console.log(`[Sync] Synced message via fallback to channel ${channelId}`);
       }
     } catch (error) {
       console.error(`[Sync] Failed to sync message to channel ${channelId}:`, error);
     }
   }
+}
+
+async function getOrCreateWebhook(channel: TextChannel): Promise<WebhookClient> {
+  if (webhookCache[channel.id]) {
+    return webhookCache[channel.id];
+  }
+
+  const webhooks = await channel.fetchWebhooks();
+  let webhook = webhooks.find((wh) => wh.owner && wh.owner.id === channel.client.user?.id);
+
+  if (!webhook) {
+    webhook = await channel.createWebhook({
+      name: 'GuildSync Proxy',
+      reason: 'Sync messages as original sender',
+    });
+  }
+
+  const webhookClient = new WebhookClient({ id: webhook.id, token: webhook.token! });
+  webhookCache[channel.id] = webhookClient;
+  return webhookClient;
 }
 
 /**
