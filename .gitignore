@@ -82,3 +82,7 @@ docker-compose.override.yml
 # Misc
 *.tmp
 *.log
+
+# Ignore local SQLite database files
+prisma/dev.db
+prisma/dev.db-journal
