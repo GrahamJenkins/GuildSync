@@ -55,15 +55,29 @@ Create a `.env` file with the following variables:
 ```
 DISCORD_TOKEN=your-discord-bot-token
 
+# Optional: Development guild ID for instant command updates
+DEV_GUILD_ID=your-dev-guild-id
+
 # LLM API configuration
 LLM_BASE_URL=https://your-openai-compatible-endpoint/v1/chat/completions
 LLM_API_KEY=your-api-key
 LLM_MODEL=gpt-3.5-turbo
 ```
 
+- `DISCORD_TOKEN`: Your Discord bot token.
+- `DEV_GUILD_ID`: *(Optional)* If set, slash commands will be registered **only** in this guild for instant updates during development. If unset, commands will be registered **globally** across all servers (may take up to 1 hour to propagate).
 - `LLM_BASE_URL`: Base URL of your OpenAI-compatible API endpoint.
 - `LLM_API_KEY`: API key for authentication.
 - `LLM_MODEL`: Model name to use (e.g., `gpt-3.5-turbo`).
+### Slash Command Registration Behavior
+
+- **Development Mode (`DEV_GUILD_ID` set):**
+  Slash commands are registered **only** in the specified guild. This allows for **instant updates** to commands, ideal for testing and development.
+
+- **Production Mode (`DEV_GUILD_ID` unset):**
+  Slash commands are registered **globally** across all servers where the bot is present. Global command updates can take **up to 1 hour** to propagate on Discord.
+
+Set or unset the `DEV_GUILD_ID` environment variable depending on your deployment environment to control command registration behavior.
 
 ### Setup
 

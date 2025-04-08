@@ -41,14 +41,30 @@ client.once('ready', async () => {
   console.log(`[INFO] Bot logged in as ${client.user?.tag}`);
   botClientId = client.user?.id ?? null;
 
+  const commands = buildGuildSyncCommands();
+
   const devGuildId = process.env.DEV_GUILD_ID;
-  if (devGuildId && botClientId) {
-    console.log(`[INFO] Registering slash commands for dev guild ${devGuildId}...`);
+
+  if (devGuildId) {
+    // Register commands ONLY for the dev guild
     try {
-      await registerGuildSyncCommands(devGuildId);
+      const guild = await client.guilds.fetch(devGuildId);
+      await guild.commands.set(commands);
       console.log(`[INFO] Slash commands registered for dev guild ${devGuildId}.`);
     } catch (error) {
       console.error(`[ERROR] Failed to register commands for dev guild ${devGuildId}:`, error);
+    }
+  } else {
+    // Register commands globally
+    if (client.application) {
+      try {
+        await client.application.commands.set(commands);
+        console.log('[INFO] Global slash commands registered.');
+      } catch (error) {
+        console.error('[ERROR] Failed to register global commands:', error);
+      }
+    } else {
+      console.warn('[WARN] client.application is null, skipping global command registration.');
     }
   }
 });
@@ -191,12 +207,7 @@ export async function unregisterGuildCommands(
 /**
  * Register /guildsync and /gs commands for a guild.
  */
-export async function registerGuildSyncCommands(guildId: string) {
-  if (!botClientId) {
-    console.warn('Bot client ID not available yet.');
-    return;
-  }
-
+export function buildGuildSyncCommands() {
   const commands = [
     (() => {
       const builder = new SlashCommandBuilder()
@@ -282,7 +293,8 @@ export async function registerGuildSyncCommands(guildId: string) {
     })(),
   ];
 
-  await registerGuildCommands(guildId, botClientId, commands);
+  return commands;
+}
 /**
  * Returns information about GuildSync.
  */
@@ -292,5 +304,4 @@ function getAboutMessage() {
     "designed to break down language barriers in global gaming communities. " +
     "It enables seamless, real-time multilingual communication and cross-server collaboration."
   );
-}
 }
