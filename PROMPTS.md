@@ -10,7 +10,7 @@ This document contains recommended prompts for interacting with AI assistants on
 Instructs the assistant to identify a high-level task, but to strictly follow all documented processes and obtain necessary approvals before making any changes. This prevents premature implementation and enforces compliance with project policies.
 
 **Prompt:**  
-"Start at `README.md`. Identify one high-level task. Before making any changes, strictly follow all instructions and processes as outlined in `README.md` and all linked documentation."
+"Start at `README.md`. Before making any changes, strictly follow all instructions and processes as outlined in `README.md` and all linked documentation."
 
 ---
 
