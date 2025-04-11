@@ -1,6 +1,6 @@
 # GuildSync AI Assistant Prompts
 
-This document contains recommended prompts for interacting with AI assistants on the GuildSync project. These prompts are designed to ensure all work aligns with the project's strict contribution guidelines and workflows.
+This document contains recommended prompts for interacting with AI assistants. These prompts are designed to ensure all work aligns with the project's strict contribution guidelines and workflows.
 
 ---
 
