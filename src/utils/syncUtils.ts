@@ -158,7 +158,7 @@ export async function getLinkedChannelsWithMetadata(syncGroupId: string): Promis
     },
   });
 
-  return channels.map((channel) => ({
+  return channels.map((channel: { discord_id: string | bigint; language_code: string | null }) => ({
     id: channel.discord_id.toString(),
     language: channel.language_code || 'en',
   }));
