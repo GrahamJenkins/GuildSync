@@ -13,6 +13,9 @@ RUN yarn install --frozen-lockfile
 # Copy the rest of the source code
 COPY . .
 
+# Generate Prisma client
+RUN npx prisma generate
+
 # Create data and db directories
 RUN mkdir -p /app/data /app/db
 
