@@ -13,6 +13,7 @@ import { randomUUID } from 'crypto';
 export async function updateGuild(guild: Guild, adminUserId?: string) {
   const now = new Date();
 
+  console.log('Upserting guild:', guild.id, guild.name);
   const result = await prisma.guild.upsert({
     where: { id: BigInt(guild.id) },
     update: {
@@ -35,6 +36,7 @@ export async function updateGuild(guild: Guild, adminUserId?: string) {
 export async function createSyncGroup(createdBy: string) {
   const now = new Date();
 
+  console.log('Creating sync group by user:', createdBy);
   const syncGroup = await prisma.syncGroup.create({
     data: {
       createdBy: {
@@ -56,6 +58,7 @@ export async function createSyncGroup(createdBy: string) {
  * @returns The upserted User record
  */
 export async function upsertUser(userId: string, username: string) {
+  console.log('Upserting user:', userId, username);
   const user = await prisma.user.upsert({
     where: { id: BigInt(userId) },
     update: {
@@ -79,6 +82,7 @@ export async function upsertUser(userId: string, username: string) {
  * @returns The upserted Guild record
  */
 export async function upsertGuild(guildId: string, name: string, iconUrl: string | null) {
+  console.log('Upserting guild:', guildId, name, iconUrl);
   const guild = await prisma.guild.upsert({
     where: { id: BigInt(guildId) },
     update: {
@@ -128,8 +132,21 @@ export async function linkChannelToGroup(
       added_by_user_id: BigInt(addedByUserId),
       added_by_username: addedByUsername,
       created_at: now,
-    },
+    }
   });
+  console.log('Creating group channel link:', link);
+
+
+
+
+
+
+
+
+
+
+
+
 
   return link;
 }
