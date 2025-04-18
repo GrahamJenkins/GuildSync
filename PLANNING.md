@@ -100,12 +100,9 @@ Implement a feature where reacting to a message with a flag emoji triggers an in
 4. **Call Translation Service**
    - Use `translationService.translate(message.content, targetLang)`:
      - `targetLang` is from the emoji mapping.
-   - Handle errors gracefully:
-     - If translation fails, notify the user with an error message.
 
 5. **Send Translated Message**
    - Send the translation as:
-     - A DM to the user who reacted, or
      - A public reply in the channel (configurable or default to one).
    - Include context, e.g.:
      ```

@@ -51,16 +51,6 @@ export function filterOutOriginChannel(channelIds: string[], originChannelId: st
 const webhookCache: Record<string, WebhookClient> = {};
 
 export async function syncMessageToChannels(client: import('discord.js').Client, message: Message, targetChannelIds: string[]): Promise<void> {
-  console.debug('[Sync Debug] message.member:', {
-    nickname: message.member?.nickname,
-    userId: message.member?.user.id,
-  });
-  console.debug('[Sync Debug] message.author:', {
-    username: message.author.username,
-    discriminator: message.author.discriminator,
-    id: message.author.id,
-    avatar: message.author.displayAvatarURL(),
-  });
 
   let senderName: string = message.author.username;
   try {
