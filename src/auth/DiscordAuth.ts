@@ -9,6 +9,7 @@ const client: Client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessageReactions,
   ],
 });
 
@@ -131,8 +132,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
 });
 
 import { REST, Routes, SlashCommandBuilder } from 'discord.js';
-import { LANGUAGE_CHOICES } from '../utils/languageOptions';
-
+import { LANGUAGES } from '../utils/languages';
 const registeredGuilds = new Set<string>();
 
 /**
@@ -231,7 +231,12 @@ export function buildGuildSyncCommands() {
           .setName('language')
           .setDescription('Language code for this channel')
           .setRequired(false)
-          .addChoices(...LANGUAGE_CHOICES)
+          .addChoices(
+            ...LANGUAGES.slice(0, 25).map(({ code, nativeName }) => ({
+              name: `:${code}: : ${nativeName}`,
+              value: code,
+            }))
+          )
       );
 
       builder.addStringOption(option =>
@@ -272,7 +277,12 @@ export function buildGuildSyncCommands() {
           .setName('language')
           .setDescription('Language code for this channel')
           .setRequired(false)
-          .addChoices(...LANGUAGE_CHOICES)
+          .addChoices(
+            ...LANGUAGES.map(({ code, nativeName }) => ({
+              name: `:${code}: : ${nativeName}`,
+              value: code,
+            }))
+          )
       );
 
       builder.addStringOption(option =>

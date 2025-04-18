@@ -38,14 +38,13 @@ Use this template:
 ```
 https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot&permissions=535260821568
 ```
-
 Replace `YOUR_CLIENT_ID` with your application's **Client ID** (found on the **General Information** page).
 
 ---
 
-## 5. Recommended Permissions
+## 5. Required Permissions
 
-The permissions integer `534723950656` includes:
+The permissions integer `535260821568` includes:
 
 | Permission                 | Why Needed                                         |
 |----------------------------|----------------------------------------------------|
@@ -68,34 +67,11 @@ You can customize permissions using the [Discord Permissions Calculator](https:/
 This bot **requires** the **Message Content privileged intent** to process and bridge messages. Without this intent enabled, the bot **will not function** as intended.
 
 Bots in **fewer than 100 servers** can use this intent without approval. However, once a bot reaches **75 servers**, it becomes eligible to apply for verification.
+
 Bots **must be verified and approved before exceeding 100 servers**; otherwise, access to the Message Content intent will be disabled, and the bot will stop working properly.
 
 For more details, refer to the [Message Content Privileged Intent FAQ](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Privileged-Intent-FAQ).
 
 ---
 
----
-
 ## 6. Invite the Bot to Your Server
-
-- You **must** have **Manage Server** permission on the target server
-- Open the generated invite URL
-- Select your server
-- Approve the permissions
-- Complete CAPTCHA if prompted
-
----
-
-## 7. Run Your Bot
-
-- Start your bot locally (e.g., `yarn start`)
-- The bot should appear **online** in your server
-
----
-
-## 8. Troubleshooting
-
-- **Bot not showing up?** Make sure it is running and the token is correct
-- **OAuth2 link not working?** Check `client_id`, `scope=bot`, and permissions
-- **Bot was banned?** Unban it before reinviting
-- **No "Add Bot" button?** You might be on the wrong tab or lack permissions

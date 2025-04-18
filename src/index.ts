@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { startBot, client } from './auth/DiscordAuth';
-import { registerSyncListener } from './syncListener';
+import { registerSyncListener, registerReactionListener } from './syncListener';
 import logger from './utils/logger';
 
 (async () => {
@@ -12,7 +12,11 @@ import logger from './utils/logger';
     console.log('---------------------------------------');
 
     await startBot();
+    console.log('Bot started successfully');
     registerSyncListener(client);
+    console.log('Sync listener registered');
+    registerReactionListener(client);
+    console.log('Reaction listener registered');
   } catch (error) {
     logger.error('Bot failed to start: %s', error);
     process.exit(1);

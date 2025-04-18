@@ -16,9 +16,6 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 
 ---
 
-
----
-
 ## Legend
 
 | Status        | Description                        |
@@ -55,16 +52,16 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Implement message translation via LLM API         | ✅ Done       | Completed 2025-04-08, with retry logic and OpenAI-compatible API support |
 | Implement per-channel language support            | ✅ Done       | Completed 2025-04-08, slash command options, stored in DB                   |
 | Refactor environment variables for LLM API (`LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`) | ✅ Done | Completed 2025-04-08                   |
-| Implement reaction-based inline translation       | 🟢 To Do      | No ephemeral support; triggers DM or public reply                           |
+| Implement reaction-based inline translation       | ✅ Done       | Completed 2025-04-18; no ephemeral support; triggers DM or public reply    |
 | Implement context menu translation command        | 🟢 To Do      | Ephemeral response; if user language unset, prompt selection before translating |
 | Implement context menu to set user language       | 🟢 To Do      | Allows user to set preferred language independently of translation          |
 | Abstract translation provider interface           | 🟢 To Do      |                                        |
 | Store channel/user configs in SQLite              | 🟢 To Do      |                                        |
 | Admin commands for managing bridges               | 🟢 To Do      |                                        |
 | Dynamic SyncGroup Builder wizard (interactive, replaces `/gc create`) | 🟢 To Do      | [Discord.js Select Menus Guide](https://discordjs.guide/message-components/select-menus.html#auto-populating-select-menus) - User-friendly group builder with questions for language, channel, etc. |
----
----
 
+---
+---
 ## Simplified MVP - Minimal Chat Bridge
 
 > These tasks are a **minimal subset** for rapid MVP delivery and **do not duplicate** the broader planned features above. They can be marked complete independently.
@@ -82,7 +79,6 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 ---
 
 ---
-
 ## Architecture Components
 
 | Component                 | Status        | Description                                                      |
@@ -185,11 +181,6 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Maintain diagrams alongside code changes          | 🟢 To Do      | Keep architecture docs up to date      |
 
 
-
-
-
-
-
 ---
 
 ## Documentation
@@ -201,7 +192,7 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Finalize NOTES.md                                | ✅ Done       |                                        |
 | Create detailed architecture diagrams             | 🟢 To Do      |                                        |
 | Write user guide for bot setup and usage          | 🟢 To Do      |                                        |
-| Add quickstart MVP documentation                  | 🟢 To Do      | Minimal guide for setup and testing MVP sync                       |
+| Add quickstart MVP documentation                  | 🟢 To Do      | Minimal guide for setup and testing MVP                       |
 
 ---
 
@@ -236,5 +227,4 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 - **Test Data:** Avoid using real secrets or API keys in tests; use environment variables or mocks.
 
 ---
-
 Update this file regularly to track progress and plan new work.
