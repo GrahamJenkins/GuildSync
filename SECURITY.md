@@ -57,4 +57,3 @@ If you discover a security vulnerability, please report it responsibly.
 
 ---
 
-_Last updated: 2025-04-05_
