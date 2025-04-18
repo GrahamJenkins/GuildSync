@@ -88,4 +88,4 @@ prisma/dev.db
 prisma/dev.db-journal
 
 # Docker folders
-db.sqlite
+db

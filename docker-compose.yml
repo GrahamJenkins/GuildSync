@@ -3,7 +3,7 @@ services:
     build: .
     container_name: guildsync-bot
     volumes:
-      - ./db.sqlite:/app/db.sqlite
+      - ./db:/app/db
       - ./.env:/app/.env
     env_file:
       - ./.env
