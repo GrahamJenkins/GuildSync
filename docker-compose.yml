@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  guildsync-bot:
+    build: .
+    container_name: guildsync-bot
+    volumes:
+      - ./db.sqlite:/app/db.sqlite
+      - ./.env:/app/.env
+    env_file:
+      - ./.env
+    command: >
+      sh -c "
+      if [ -d /app/node_modules ]; then
+        echo 'Running production mode';
+        node dist/index.js;
+      else
+        echo 'Running development mode';
+        yarn dev;
+      fi
+      "
+    restart: unless-stopped

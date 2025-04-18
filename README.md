@@ -3,13 +3,11 @@
 GuildSync is a high-quality, well-documented Discord bot for seamless multilingual communication and cross-server collaboration.
 
 ---
-
 ## Overview
 
 A **free, open-source, self-hostable** Discord bot designed to **break down language barriers** in global gaming communities. Powered by advanced AI language models, it enables **seamless, real-time multilingual communication** so players and leaders can coordinate effortlessly—no matter what languages they speak.
 
 ---
-
 ### Why Use This Bot?
 
 - **Foster Inclusivity:** Empower your community to welcome players worldwide, creating a more connected and diverse environment.
@@ -22,15 +20,6 @@ A **free, open-source, self-hostable** Discord bot designed to **break down lang
 - **Future-Ready:** Designed for extensibility, with plans for a hosted version to make multilingual gaming even more accessible.
 
 ---
-
-### Who Is It For?
-
-- **Gaming communities** that want to include players from around the world.
-- **Guild leaders and event organizers** coordinating international teams.
-- **Any Discord server** looking to reduce friction in multilingual conversations.
-
----
-
 ## Getting Started
 
 ### Prerequisites
@@ -48,64 +37,67 @@ If you don't already have a bot, follow the detailed instructions in [docs/DISCO
 
 Once you have your bot token, add it to your `.env` file as shown below.
 
-### Environment Variables
+### Environment Variables and Folder Setup for Docker
 
-Create a `.env` file with the following variables:
+For local development and Docker, ensure your `.env` file contains the following environment variable to specify the SQLite database file path:
 
-```
-DISCORD_TOKEN=your-discord-bot-token
-
-# Optional: Development guild ID for instant command updates
-DEV_GUILD_ID=your-dev-guild-id
-
-# LLM API configuration
-LLM_BASE_URL=https://your-openai-compatible-endpoint/v1/chat/completions
-LLM_API_KEY=your-api-key
-LLM_MODEL=gpt-3.5-turbo
+```env
+DATABASE_URL="file:./db.sqlite"
 ```
 
-- `DISCORD_TOKEN`: Your Discord bot token.
-- `DEV_GUILD_ID`: *(Optional)* If set, slash commands will be registered **only** in this guild for instant updates during development. If unset, commands will be registered **globally** across all servers (may take up to 1 hour to propagate).
-- `LLM_BASE_URL`: Base URL of your OpenAI-compatible API endpoint.
-- `LLM_API_KEY`: API key for authentication.
-- `LLM_MODEL`: Model name to use (e.g., `gpt-3.5-turbo`).
-### Slash Command Registration Behavior
+Note: Due to a known Prisma issue, relative paths in `DATABASE_URL` are resolved relative to the Prisma schema file location. To avoid issues, the application automatically resolves this path to an absolute path at runtime.
 
-- **Development Mode (`DEV_GUILD_ID` set):**
-  Slash commands are registered **only** in the specified guild. This allows for **instant updates** to commands, ideal for testing and development.
+When running in Docker, the `docker-compose.yml` mounts the project root and `.env` file to the container, ensuring consistent database file location between local and Docker environments.
 
-- **Production Mode (`DEV_GUILD_ID` unset):**
-  Slash commands are registered **globally** across all servers where the bot is present. Global command updates can take **up to 1 hour** to propagate on Discord.
+Make sure the database file is writable by the application to allow data persistence.
 
-Set or unset the `DEV_GUILD_ID` environment variable depending on your deployment environment to control command registration behavior.
+To run GuildSync in Docker, you need to set up the following folders and environment variables:
 
-### Setup
+1. Create two folders in your project root:
+   - `data/` — to hold the `.env` file
+   - `db/` — to hold the SQLite database file
 
-1. **Clone the repository**
+2. Add these folders to your `.gitignore` to avoid committing sensitive data.
 
-```
-git clone <repo-url>
-cd discord-translator
-```
+3. Copy the `.env.sample` file into the `data/` folder as `.env`:
 
-2. **Install dependencies**
+   ```bash
+   cp .env.sample data/.env
+   ```
 
-```
-yarn install
-```
+4. Edit `data/.env` to add your Discord bot token and other required environment variables
 
-3. **Configure environment variables**
+### Important Note on Docker Compose Compatibility
 
-Create a `.env` file as shown above.
+- The current Docker setup **is not compatible with the standalone `docker-compose` CLI tool** (e.g., version 1.29.2) due to known compatibility issues with Python dependencies.
+- You **must use the newer Docker Compose CLI plugin**, invoked as:
 
-4. **Run the bot in development mode**
+  ```bash
+  docker compose up -d
+  ```
 
-```
-yarn dev
-```
+  This command runs the containers in detached (daemon) mode.
+
+- Using `docker compose` ensures full compatibility with the Compose file format and avoids errors related to unsupported URL schemes.
 
 ---
+### Build and Run Docker Container
 
+- Build the Docker image:
+
+  ```bash
+  docker build -t guildsync-bot .
+  ```
+
+- Run the container using Docker Compose:
+
+  ```bash
+  docker compose up -d
+  ```
+
+- The container mounts the `data/` and `db/` folders for persistent configuration and database storage.
+
+---
 ## Language Support
 
 When creating or joining a sync group, you can specify a **language code** for the channel. This controls the translation target/source language.
@@ -115,7 +107,6 @@ When creating or joining a sync group, you can specify a **language code** for t
 - The bot will suggest common languages when using slash commands.
 
 ---
-
 ## How to Work on This Project
 
 - **Start here:** This README.md
@@ -123,16 +114,7 @@ When creating or joining a sync group, you can specify a **language code** for t
 - **Project architecture and decisions:** See [NOTES.md](./NOTES.md)
 - **Task list and roadmap:** See [TASKS.md](./TASKS.md)
 
-### Selecting a Task
-
-1. Open [TASKS.md](./TASKS.md)
-2. Choose an unassigned or open task
-3. Follow the workflow in [DEVELOPMENT.md](./DEVELOPMENT.md)
-4. Ensure your work meets all linting, formatting, and documentation standards
-5. Submit a pull request for review
-
 ---
-
 ## Contribution Guidelines
 
 - **Use Yarn only** for all package management
@@ -144,13 +126,12 @@ When creating or joining a sync group, you can specify a **language code** for t
 > **⚠️ WARNING:** If you do not follow these contribution policies, your work will be **rejected by default**. Always clarify uncertainties and obtain required approvals before starting.
 
 ---
-
-### Task Complexity & Branching Policy (Summary)
+## Task Complexity & Branching Policy (Summary)
 
 - **Simple tasks** (minor fixes, typos, initial setup, quick non-impactful changes):
   - Work **directly on the `dev` branch**
   - No need for prior approval or feature branches
-- **All other tasks** (new features, refactors, anything non-trivial):
+- **All other tasks** (new features, refactors, architectural changes, or anything non-trivial):
   - **Prepare a plan and get approval before coding**
   - **Create a feature branch from `dev`**
   - **Push your branch immediately**
@@ -159,7 +140,6 @@ When creating or joining a sync group, you can specify a **language code** for t
 _Default to treating tasks as non-trivial unless clearly simple. See [DEVELOPMENT.md](./DEVELOPMENT.md) for full details._
 
 ---
-
 ## Documentation
 
 - **Architecture & decisions:** [NOTES.md](./NOTES.md)
@@ -168,13 +148,11 @@ _Default to treating tasks as non-trivial unless clearly simple. See [DEVELOPMEN
 - **Additional docs:** To be added in `/docs`
 
 ---
-
 ## License
 
 _To be decided_
 
 ---
-
 ## Contact
 
 _Maintainer info to be added_

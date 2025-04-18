@@ -100,8 +100,8 @@ This file tracks all major tasks, features, and improvements for the Discord Tra
 | Setup Jest for testing                            | 🟢 To Do      |                                        |
 | Setup CI pipeline (GitHub Actions, etc.)          | 🟢 To Do      |                                        |
 | Generate API docs with Typedoc                    | 🟢 To Do      |                                        |
-| Write developer onboarding docs                   | 🟢 To Do      |                                        |
-| Add Docker support for development and production | 🟢 To Do      | Create Dockerfile, docker-compose, update README with build/run instructions |
+| Write developer onboarding docs                   | 🟢 Done      |                                        |
+| Add Docker support for development and production | 🟢 Done      | Created Dockerfile, docker-compose.yml, updated README with build/run instructions, fixed relative path issue for SQLite database in Docker and local environments |
 
 ---
 
