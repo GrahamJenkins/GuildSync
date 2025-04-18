@@ -17,7 +17,7 @@ COPY . .
 RUN mkdir -p /app/data /app/db
 
 # Copy .env.sample to /app/data/.env if .env does not exist
-RUN if [ ! -f /app/data/.env ]; then cp /app/.env.sample /app/data/.env; fi
+RUN if [ ! -f /app/data/.env ]; then cp /app/env.sample /app/data/.env; fi
 
 # Build the project (compile TypeScript)
 RUN yarn build
